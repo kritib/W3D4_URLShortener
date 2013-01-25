@@ -1,5 +1,5 @@
-require 'launchy'
-
+require 'launchy'         #Vincent - we got this to work by putting "gem 'launchy'" in the Gem project file instead of
+                          # a require in the individual model files.
 class User < ActiveRecord::Base
   has_many :urls
   has_many :comments
@@ -9,13 +9,13 @@ class User < ActiveRecord::Base
     if string.to_i == 0
       return User.find_by_name(string)
     else
-      return User.find_by_id(string.to_i)
+      return User.find_by_id(string.to_i)     #Vincent - find_by_id may be able to be replaced by just find.
     end
   end
 
   def shorten(original_url)
-    unless u = Url.to_url(original_url)
-      u = Url.new
+    unless u = Url.to_url(original_url)   #Vincent - I don't quite understand this line. What does 'u' equal before
+      u = Url.new                         # you get into the unless block?
       u.original_url = original_url
       u.user = self
       u.save
