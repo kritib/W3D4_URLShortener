@@ -7,6 +7,15 @@ class Url < ActiveRecord::Base
 
   PREFIX = "Mario&Kriti"
 
+  def self.to_url(string)
+    split_string = string.split("/")
+    if split_string[0] == PREFIX
+      return Url.find_by_id(split_string[1].to_i)
+    else
+      return Url.find_by_original_url(string)
+    end
+  end
+
   def print_comments
     if self.comments.empty?
       puts "This link has no comments."
@@ -23,18 +32,19 @@ class Url < ActiveRecord::Base
     self.clicks.size
   end
 
+  def unique_clicks
+    # self.clicks.select("DISTINCT(clicks.user_id)").count
+    self.clicks.select(:user_id).uniq.length
+  end
+
+  def recent_clicks(mins = 10)
+    self.clicks.where(:created_at => (mins.minutes.ago..Time.now)).length
+  end
+
   def to_short
     "#{PREFIX}/#{self.id}"
   end
 
-  def self.to_url(string)
-    split_string = string.split("/")
-    if split_string[0] == PREFIX
-      return Url.find_by_id(split_string[1].to_i)
-    else
-      return Url.find_by_original_url(string)
-    end
-  end
 
   def add_tags(tags_array)
     tags_array.each do |tag|
