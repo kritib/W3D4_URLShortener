@@ -4,8 +4,8 @@ class Tag < ActiveRecord::Base
   has_many :urls, :through => :tags_urls
 
   def self.get_tags
-    all.map(&:name)
-  end
+    all.map(&:name)     #Vincent - I'm not sure if you'd want "self.all.map" here to be consistent with your use of 
+  end                   # self elsewhere below?
 
   def open_url_with_tag(user)
     self.urls
