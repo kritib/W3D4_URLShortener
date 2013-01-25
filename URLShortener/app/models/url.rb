@@ -10,7 +10,7 @@ class Url < ActiveRecord::Base
   def self.to_url(string)
     split_string = string.split("/")
     if split_string[0] == PREFIX
-      return Url.find_by_id(split_string[1].to_i)
+      return Url.find_by_id(split_string[1].to_i)     #Vincent - I think find_by_id can just be 'find'?
     else
       return Url.find_by_original_url(string)
     end
